@@ -2,23 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 use App\Models\Trip;
 use App\Models\Vehicle;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
-     *
+     * 
      * @var array<int, string>
      */
     protected $fillable = [
@@ -31,7 +30,7 @@ class User extends Authenticatable
 
     /**
      * The attributes that should be hidden for serialization.
-     *
+     * 
      * @var array<int, string>
      */
     protected $hidden = [
@@ -40,19 +39,20 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
-     *
+     * The attributes that should be cast to native types.
+     * 
      * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        // Removed 'password' => 'hashed' to handle password hashing manually
+        // You can enable password hashing here if using Laravel 10+:
+        // 'password' => 'hashed',
     ];
 
     /**
-     * Defines the relationship for trips where this user is the **customer**.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * Get the trips where this user is the customer.
+     * 
+     * @return HasMany
      */
     public function tripsAsCustomer(): HasMany
     {
@@ -60,9 +60,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Defines the relationship for trips where this user is the **driver**.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * Get the trips where this user is the driver.
+     * 
+     * @return HasMany
      */
     public function tripsAsDriver(): HasMany
     {
@@ -70,9 +70,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Defines the relationship for the vehicle assigned to this user (driver).
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * Get the vehicle assigned to this user (driver).
+     * 
+     * @return HasOne
      */
     public function vehicle(): HasOne
     {

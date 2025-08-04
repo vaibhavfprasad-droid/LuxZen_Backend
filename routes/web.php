@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController; // Only this controller is needed for the dashboard now
-
+use App\Http\Controllers\DriverLocationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,4 +37,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/vehicles', fn() => view('pages.vehicles-index'))->name('vehicles.index');
     Route::get('/invoices', fn() => view('pages.invoices-index'))->name('invoices.index');
     Route::get('/settings', fn() => view('pages.settings-index'))->name('settings');
+    Route::get('/driver-locations', [DriverLocationController::class, 'index'])->name('driver-locations');
 });

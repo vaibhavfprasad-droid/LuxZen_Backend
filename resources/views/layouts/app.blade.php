@@ -46,6 +46,7 @@
                 <a class="list-group-item list-group-item-action list-group-item-dark p-3 {{ request()->routeIs('vehicles.index') ? 'active' : '' }}" href="{{ route('vehicles.index') }}">Vehicles</a>
                 <a class="list-group-item list-group-item-action list-group-item-dark p-3 {{ request()->routeIs('invoices.index') ? 'active' : '' }}" href="{{ route('invoices.index') }}">Invoices</a>
                 <a class="list-group-item list-group-item-action list-group-item-dark p-3 {{ request()->routeIs('settings') ? 'active' : '' }}" href="{{ route('settings') }}">Settings</a>
+                <a href="{{ route('driver-locations') }}" class="list-group-item list-group-item-action {{ request()->is('driver-locations') ? 'active' : '' }}">Driver Locations</a>
             </div>
         </div>
         @endauth

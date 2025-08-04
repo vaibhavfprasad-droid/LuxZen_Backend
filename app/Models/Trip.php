@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\Invoice;
@@ -12,21 +15,16 @@ class Trip extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
     protected $fillable = [
         'customer_id',
         'driver_id',
         'vehicle_id',
         'pickup_location',
-        'pickup_latitude',      // <-- added
-        'pickup_longitude',     // <-- added
+        'pickup_latitude',
+        'pickup_longitude',
         'dropoff_location',
-        'dropoff_latitude',     // <-- added
-        'dropoff_longitude',    // <-- added
+        'dropoff_latitude',
+        'dropoff_longitude',
         'trip_type',
         'status',
         'fare',
@@ -34,53 +32,39 @@ class Trip extends Model
         'started_at',
         'completed_at',
         'canceled_at',
+        'otp',             // OTP for start verification
+        'completion_otp',  // OTP for trip completion
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
-        'scheduled_at'  => 'datetime',
-        'started_at'    => 'datetime',
-        'completed_at'  => 'datetime',
-        'canceled_at'   => 'datetime',
-        'fare'          => 'decimal:2',
-        'pickup_latitude'   => 'float',  // <-- added
-        'pickup_longitude'  => 'float',  // <-- added
-        'dropoff_latitude'  => 'float',  // <-- added
-        'dropoff_longitude' => 'float',  // <-- added
+        'scheduled_at' => 'datetime',
+        'started_at' => 'datetime',
+        'completed_at' => 'datetime',
+        'canceled_at' => 'datetime',
+        'fare' => 'decimal:2',
+        'pickup_latitude' => 'float',
+        'pickup_longitude' => 'float',
+        'dropoff_latitude' => 'float',
+        'dropoff_longitude' => 'float',
+        // 'otp' and 'completion_otp' are strings; no cast needed unless desired
     ];
 
-    /**
-     * Get the customer (user) who booked the trip.
-     */
-    public function customer()
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'customer_id');
     }
 
-    /**
-     * Get the driver (user) assigned to this trip.
-     */
-    public function driver()
+    public function driver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'driver_id');
     }
 
-    /**
-     * Get the vehicle assigned for this trip.
-     */
-    public function vehicle()
+    public function vehicle(): BelongsTo
     {
         return $this->belongsTo(Vehicle::class);
     }
 
-    /**
-     * Get the invoice associated with this trip.
-     */
-    public function invoice()
+    public function invoice(): HasOne
     {
         return $this->hasOne(Invoice::class);
     }
