@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\UserResource; // Import UserResource for customer
 
 class TripResource extends JsonResource
 {
@@ -16,6 +17,7 @@ class TripResource extends JsonResource
     {
         return [
             'id'                => $this->id,
+            'customer_id'       => $this->customer_id,  // Include customer_id
             'pickup_location'   => $this->pickup_location,
             'pickup_latitude'   => $this->pickup_latitude,
             'pickup_longitude'  => $this->pickup_longitude,
@@ -27,10 +29,17 @@ class TripResource extends JsonResource
             'status'            => $this->status,
             'fare'              => $this->fare,
             'vehicle_id'        => $this->vehicle_id,
-            // Optionally include related data:
-            // 'vehicle'        => new VehicleResource($this->whenLoaded('vehicle')),
-            // 'driver'         => new UserResource($this->whenLoaded('driver')),
-            // ...
+
+            // OTP fields added here
+            'otp'               => $this->otp,
+            'completion_otp'    => $this->completion_otp,
+
+            // Add related customer data if loaded:
+            'customer'          => new UserResource($this->whenLoaded('customer')),
+
+            // Optionally add vehicle and driver resources as well if needed
+            // 'vehicle'           => new VehicleResource($this->whenLoaded('vehicle')),
+            // 'driver'            => new UserResource($this->whenLoaded('driver')),
         ];
     }
 }

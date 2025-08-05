@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\TripController;
 use App\Http\Controllers\Api\VehicleController;
 use App\Http\Resources\UserResource;
 use App\Http\Controllers\DriverLocationController;
+// use App\Http\Controllers\Api\UserController;
 
 // Public routes without authentication
 Route::post('/register', [AuthController::class, 'register']);
@@ -35,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('trips/{trip}/verify-completion-otp', [TripController::class, 'verifyCompletionOtp']);
     // Driver trips route
     Route::get('driver/trips', [TripController::class, 'driverTrips']);
+    Route::get('customers/{customerId}', [TripController::class, 'getCustomerDetails']);
 
     // Vehicles
     Route::get('/vehicles', [VehicleController::class, 'index']);
@@ -47,4 +49,5 @@ Route::middleware('auth:sanctum')->group(function () {
  
     // Add more routes as needed
     Route::post('/driver/location', [DriverLocationController::class, 'store']);
+    // Route::get('/users/{id}', [UserController::class, 'show']);
 });

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Trip;
 use Illuminate\Http\Request;
 use App\Http\Resources\TripResource;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 
 class TripController extends Controller
 {
@@ -176,7 +178,7 @@ public function accept(Request $request, Trip $trip)
     if ($trip->status !== 'pending' || $trip->driver_id !== null) {
         return response()->json(['message' => 'Trip cannot be accepted'], 400);
     }
-
+  
     // Generate 6-digit OTP for start verification
     $otp = random_int(100000, 999999);
 
@@ -287,6 +289,19 @@ public function verifyOtp(Request $request, Trip $trip)
     // TODO: Send $completionOtp to the customer via SMS or push notification
 
     return new TripResource($trip);
+}
+
+// In app/Http/Controllers/Api/TripController.php
+
+public function getCustomerDetails($customerId)
+{
+    $customer = User::find($customerId);
+
+    if (!$customer) {
+        return response()->json(['message' => 'Customer not found'], 404);
+    }
+
+    return new UserResource($customer);
 }
 
 
