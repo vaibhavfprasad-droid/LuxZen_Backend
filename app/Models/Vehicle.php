@@ -4,6 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\User;
+use App\Models\Trip;
+use App\Models\VehicleDocument;
 
 class Vehicle extends Model
 {
@@ -22,16 +27,27 @@ class Vehicle extends Model
         'status',
     ];
 
-    // --- Relationships ---
-    public function driver() {
+    /**
+     * Get the driver (user) associated with the vehicle.
+     */
+    public function driver(): BelongsTo
+    {
         return $this->belongsTo(User::class, 'driver_id');
     }
 
-    public function trips() {
-        return $this->hasMany(Trip::class);
+    /**
+     * Get the trips for this vehicle.
+     */
+    public function trips(): HasMany
+    {
+        return $this->hasMany(Trip::class, 'vehicle_id');
     }
 
-    public function documents() {
+    /**
+     * Get the documents related to this vehicle.
+     */
+    public function documents(): HasMany
+    {
         return $this->hasMany(VehicleDocument::class);
     }
 }

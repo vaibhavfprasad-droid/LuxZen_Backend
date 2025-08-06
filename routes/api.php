@@ -15,6 +15,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Protected routes requiring authentication
 Route::middleware('auth:sanctum')->group(function () {
+    
     Route::post('/logout', [AuthController::class, 'logout']);
     
     Route::get('/test', function () {
@@ -50,4 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Add more routes as needed
     Route::post('/driver/location', [DriverLocationController::class, 'store']);
     // Route::get('/users/{id}', [UserController::class, 'show']);
+
+
+    Route::get('/drivers/{driverId}/location/latest', [DriverLocationController::class, 'latest']);
 });

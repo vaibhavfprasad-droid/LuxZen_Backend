@@ -8,8 +8,12 @@ use App\Models\User;
 
 class DriverLocation extends Model
 {
-    public $timestamps = false; // Since you handle timestamps manually
+    use HasFactory;
 
+    // Disable timestamps since you handle created_at manually
+    public $timestamps = false;
+
+    // Mass assignable attributes
     protected $fillable = [
         'driver_id',
         'latitude',
@@ -17,12 +21,16 @@ class DriverLocation extends Model
         'created_at',
     ];
 
+    // Cast attributes to proper types
     protected $casts = [
         'created_at' => 'datetime',
         'latitude' => 'float',
         'longitude' => 'float',
     ];
 
+    /**
+     * Get the driver (user) associated with this location.
+     */
     public function driver()
     {
         return $this->belongsTo(User::class, 'driver_id');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\DriverLocation;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DriverLocationController extends Controller
 {
@@ -40,5 +41,22 @@ class DriverLocationController extends Controller
             'status' => 'success',
             'location' => $location
         ]);
+    }
+    public function latest($driverId)
+    {
+        try {
+            // Get latest location by created_at desc
+            $location = DriverLocation::where('driver_id', $driverId)
+                ->orderByDesc('created_at')
+                ->firstOrFail();
+
+            return response()->json([
+                'latitude'  => $location->latitude,
+                'longitude' => $location->longitude,
+                'updated_at'=> $location->created_at->toDateTimeString(),
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Driver location not found'], 404);
+        }
     }
 }

@@ -147,7 +147,7 @@ class TripController extends Controller
             return response()->json(['message' => 'Trip already cancelled or completed'], 400);
         }
 
-        $trip->status = 'cancelled';
+        $trip->status = 'canceled';
         $trip->canceled_at = now();
         $trip->save();
 
