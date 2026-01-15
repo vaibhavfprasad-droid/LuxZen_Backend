@@ -15,10 +15,9 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN chown -R www-data:www-data /var/www/html
-
-COPY docker/nginx.conf /etc/nginx/nginx.conf
+RUN chown -R www-data:www-data storage bootstrap/cache \
+ && chmod -R 775 storage bootstrap/cache
 
 EXPOSE 80
 
-CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
+CMD sh -c "php-fpm -D && nginx -g 'daemon off;'"
