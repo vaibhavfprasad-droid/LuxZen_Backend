@@ -2,7 +2,6 @@ FROM php:8.2-fpm-alpine
 
 RUN apk add --no-cache \
     nginx \
-    supervisor \
     curl \
     zip \
     unzip \
@@ -14,6 +13,8 @@ RUN docker-php-ext-install pdo pdo_mysql zip gd
 WORKDIR /var/www/html
 
 COPY . .
+
+COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 RUN chown -R www-data:www-data storage bootstrap/cache \
  && chmod -R 775 storage bootstrap/cache
